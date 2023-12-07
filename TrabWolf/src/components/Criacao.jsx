@@ -23,6 +23,49 @@ export default function Criacao({ navigation }) {
     navigation.navigate('Biblioteca', { outputList });
   };
 
+
+
+
+
+
+
+  const [selectedPage, setSelectedPage] = useState('');
+  const [usuariosData, setUsuariosData] = useState(null);
+
+  useEffect(() => {
+    if (route.params && route.params.usuariosId) {
+      const dogIdToFind = route.params.usuariosId;
+
+      fetchUsuariosData()
+        .then((data) => {
+          const foundUsuarios = data.usuarios.find((usuarios) => usuarios.id === dogIdToFind);
+          if (foundUsuarios) {
+            setUsuariosData(foundUsuarios);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [route.params]);
+
+  const fetchUsuariosData = async () => {
+    try {
+      const response = await fetch('https://vercel.com/ians-projects-c74f457a/trab-kzaf');
+
+      if (!response.ok) {
+        throw new Error('Erro na solicitação à API');
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+
+
   return (
     <View style={styles.container}>
       <TextInput
@@ -36,7 +79,7 @@ export default function Criacao({ navigation }) {
         onPress={handleButtonPress}
         color="#FF5733" // Altere a cor do botão
       />
-      
+
       <FlatList
         data={outputList}
         renderItem={({ item }) => <Text style={styles.item}>{item}</Text>}
@@ -47,6 +90,23 @@ export default function Criacao({ navigation }) {
         onPress={navigateToTela3}
         color="#FF5733" // Altere a cor do botão
       />
+      <ScrollView>
+        {usuariosData && (
+          <View style={styles.container}>
+            <View style={styles.imageContainer}>
+              <Image source={{ uri: usuariosData.photo }} style={styles.image} />
+            </View>
+            <View style={styles.contactContainer}>
+              <Text style={styles.heading}>Id: {usuariosData.id}</Text>
+              <Text style={styles.heading}>Nome: {usuariosData.nome}</Text>
+              <Text style={styles.heading}>Email: {usuariosData.email}</Text>
+              <Text style={styles.heading}>Altura: {usuariosData.altura}</Text>
+              <Text style={styles.heading}>Peso: {usuariosData.peso}</Text>
+            </View>
+          </View>
+        )}
+        <Footer selectedPage={selectedPage} handlePageSelect={(page) => setSelectedPage(page)} />
+      </ScrollView>
     </View>
   );
 }
