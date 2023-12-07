@@ -13,7 +13,7 @@ const getAll = async () => {
 const createUsuarios = async (usuariosData) => {
     const { id, nome, email, altura, peso } = usuariosData;
 
-    const query = 'INSERT INTO animals(id, nome, email, altura, peso) VALUES($1, $2, $3, $4, $5) RETURNING *';
+    const query = 'INSERT INTO usuarios(id, nome, email, altura, peso) VALUES($1, $2, $3, $4, $5) RETURNING *';
 
     try {
         const { rows } = await connection.query(query, [id, nome, email, altura, peso]);
@@ -25,7 +25,7 @@ const createUsuarios = async (usuariosData) => {
 };
 
 const deleteUsuarios = async (id) => {
-    const query = 'DELETE FROM animals WHERE id = $1 RETURNING *';
+    const query = 'DELETE FROM usuarios WHERE id = $1 RETURNING *';
 
     try {
         const { rows } = await connection.query(query, [id]);
@@ -44,7 +44,7 @@ const deleteUsuarios = async (id) => {
 const updateUsuarios = async (id, usuarios) => {
     const { id, nome, email, altura, peso } = usuarios;
 
-    const query = 'UPDATE animals SET id = $1, nome = $2, email = $3, altura = $4, peso = $5 WHERE id = $15 RETURNING *';
+    const query = 'UPDATE usuarios SET id = $1, nome = $2, email = $3, altura = $4, peso = $5 WHERE id = $15 RETURNING *';
 
     try {
         const { rows } = await connection.query(query, [id, nome, email, altura, peso, id]);
