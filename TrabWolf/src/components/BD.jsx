@@ -20,6 +20,8 @@ function UsuariosDetails({ route }) {
                     console.error(error);
                 });
         }
+
+
     }, [route.params]);
 
     const fetchUsuariosData = async () => {
